@@ -3,7 +3,7 @@
 // get follow request 
 
 // controllers/userController.js
-const User = require('../Models/UserModel.js');
+const { User } = require('../Models/UserModel');
 const mongoose = require('mongoose');
 
 

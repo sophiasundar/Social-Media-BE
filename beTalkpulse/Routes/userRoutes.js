@@ -1,9 +1,9 @@
 // userRoutes.js
 const express = require('express');
-const User = require('../Models/UserModel.js');
+const { User } = require('../Models/UserModel.js');
 const { registerUser, loginUser} = require('../Controllers/userController.js');
 const { getAllUsersRequested, getFollowRequests , acceptFollowRequest, denyFollowRequest, sendFollowRequest, 
-  getUserFollowersAndFollowing, 
+  getUserFollowersAndFollowing,
  } = require('../Controllers/FollowRequestController.js');
 const { auth } = require('../middleware/auth.js');
 const router = express.Router();
@@ -65,6 +65,7 @@ router.post('/accept-follow', auth,  acceptFollowRequest);
 router.post('/deny-follow', auth, denyFollowRequest);
 
 router.get('/followers-following', auth, getUserFollowersAndFollowing);
+
 
 
 
