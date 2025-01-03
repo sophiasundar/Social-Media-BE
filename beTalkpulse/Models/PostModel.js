@@ -1,5 +1,37 @@
 const mongoose = require('mongoose');
 
+const commentSchema = new mongoose.Schema({
+  // postId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Post',
+  //   required: true,
+  // },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const postSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -13,7 +45,7 @@ const postSchema = new mongoose.Schema({
   },
   mediaType: {
     type: String,
-    enum: ['image', 'video', 'gif'],  // Enum to define allowed media types
+    enum: ['image', 'video', 'gif'],
     required: true,
   },
   mediaUrl: {
@@ -25,14 +57,9 @@ const postSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-    }
+    },
   ],
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment',
-    }
-  ],
+  comments: [commentSchema], // Use the locally defined schema
   createdAt: {
     type: Date,
     default: Date.now,
@@ -40,16 +67,9 @@ const postSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
-postSchema.pre('update', function() {
-  this.update({}, { $set: { updatedAt: new Date() } });
-});
+const Post = mongoose.model('Post', postSchema);
 
-postSchema.pre('findOneAndUpdate', function() {
-  this.set({ updatedAt: new Date() });
-});
-
-module.exports = mongoose.model('Post', postSchema);
-
+module.exports = Post;
